@@ -1,5 +1,7 @@
 package com.example.lifeadvice;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -33,6 +35,20 @@ public class MainActivity extends AppCompatActivity {
 
         AdviceClient adviceClient = retrofit.create(AdviceClient.class);
 
+        // the code below on the progress dialog was taken from stackoverflow.com/questions/9170228/android-asynctask-dialog-circle
+        ProgressDialog progDialog = new ProgressDialog(MainActivity.this);
+
+        @Override
+        protected void onPreExecute(){
+            super.onPreExecute();
+
+            progDialog.setMessage("Loading Advice...");
+            progDialog.setIndeterminate(false);
+            progDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progDialog.setCancelable(true);
+            progDialog.show();
+        }
+
         @Override
         protected Slip doInBackground(Void... voids) {
             Call<Advice> adviceCall = adviceClient.getAdvice();
@@ -51,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(Slip result){
             TextView textView = findViewById(R.id.adviceView);
             textView.setText(result.getAdvice());
+            progDialog.dismiss();
         }
 
     }
