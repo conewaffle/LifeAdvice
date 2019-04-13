@@ -42,20 +42,8 @@ public class MainActivity extends AppCompatActivity {
         TextView textView = findViewById(R.id.adviceView);
         Button button = findViewById(R.id.button);
 
-        //animations
         ProgressDialog progDialog = new ProgressDialog(MainActivity.this);
-
-        final Animation scaleIn = new ScaleAnimation(0,1f,0,1f);
-
-        AnimationSet as = new AnimationSet(true);
-
         final Animation fadeIn = new AlphaAnimation(0,1);
-
-        final Animation rotateIn = new RotateAnimation(
-                90,
-                360, RotateAnimation.RELATIVE_TO_SELF,
-                0.5f,
-                RotateAnimation.RELATIVE_TO_SELF, 0.5f);
 
 
         @Override
@@ -87,14 +75,8 @@ public class MainActivity extends AppCompatActivity {
             textView.setText("\"" + result.getAdvice() + "\"");
             button.setText("Get More Advice");
             progDialog.dismiss();
-
-            fadeIn.setDuration(500);
-            rotateIn.setDuration(500);
-            scaleIn.setDuration(500);
-            as.addAnimation(fadeIn);
-            as.addAnimation(rotateIn);
-            as.addAnimation(scaleIn);
-            textView.startAnimation(as);
+            fadeIn.setDuration(300);
+            textView.startAnimation(fadeIn);
         }
 
     }
