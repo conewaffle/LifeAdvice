@@ -26,7 +26,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
     private class GetAdviceClass extends AsyncTask<Void, Void, Slip>{
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://api.adviceslip.com/")
@@ -34,6 +33,9 @@ public class MainActivity extends AppCompatActivity {
                 .build();
 
         AdviceClient adviceClient = retrofit.create(AdviceClient.class);
+
+        TextView textView = findViewById(R.id.adviceView);
+        Button button = findViewById(R.id.button);
 
         // the code below on the progress dialog was taken from stackoverflow.com/questions/9170228/android-asynctask-dialog-circle
         ProgressDialog progDialog = new ProgressDialog(MainActivity.this);
@@ -47,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
             progDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
             progDialog.setCancelable(true);
             progDialog.show();
+
         }
 
         @Override
@@ -65,8 +68,8 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(Slip result){
-            TextView textView = findViewById(R.id.adviceView);
-            textView.setText(result.getAdvice());
+            textView.setText("\"" + result.getAdvice() + "\"");
+            button.setText("Get More Advice");
             progDialog.dismiss();
         }
 
