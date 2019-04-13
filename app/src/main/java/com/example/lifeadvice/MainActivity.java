@@ -6,6 +6,11 @@ import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.RotateAnimation;
+import android.view.animation.ScaleAnimation;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -37,19 +42,30 @@ public class MainActivity extends AppCompatActivity {
         TextView textView = findViewById(R.id.adviceView);
         Button button = findViewById(R.id.button);
 
-        // the code below on the progress dialog was taken from stackoverflow.com/questions/9170228/android-asynctask-dialog-circle
+        //animations
         ProgressDialog progDialog = new ProgressDialog(MainActivity.this);
+
+        final Animation scaleIn = new ScaleAnimation(0,1f,0,1f);
+
+        AnimationSet as = new AnimationSet(true);
+
+        final Animation fadeIn = new AlphaAnimation(0,1);
+
+        final Animation rotateIn = new RotateAnimation(
+                90,
+                360, RotateAnimation.RELATIVE_TO_SELF,
+                0.5f,
+                RotateAnimation.RELATIVE_TO_SELF, 0.5f);
+
 
         @Override
         protected void onPreExecute(){
             super.onPreExecute();
-
             progDialog.setMessage("Loading Advice...");
             progDialog.setIndeterminate(false);
             progDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
             progDialog.setCancelable(true);
             progDialog.show();
-
         }
 
         @Override
@@ -71,6 +87,14 @@ public class MainActivity extends AppCompatActivity {
             textView.setText("\"" + result.getAdvice() + "\"");
             button.setText("Get More Advice");
             progDialog.dismiss();
+
+            fadeIn.setDuration(500);
+            rotateIn.setDuration(500);
+            scaleIn.setDuration(500);
+            as.addAnimation(fadeIn);
+            as.addAnimation(rotateIn);
+            as.addAnimation(scaleIn);
+            textView.startAnimation(as);
         }
 
     }
